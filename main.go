@@ -9,7 +9,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Define Task struct
 type Task struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
@@ -17,11 +16,10 @@ type Task struct {
 	Status      string `json:"status"` // "pending" or "completed"
 }
 
-// Store tasks in an in-memory slice
 var tasks []Task
 var nextID = 1
 
-// Create a new task (POST /tasks)
+
 func createTask(w http.ResponseWriter, r *http.Request) {
 	var task Task
 	json.NewDecoder(r.Body).Decode(&task)
@@ -31,12 +29,11 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(task) // Return the created task as a response
 }
 
-// Get all tasks (GET /tasks)
 func getAllTasks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tasks) // Return all tasks
 }
 
-// Get a task by ID (GET /tasks/{id})
+
 func getTaskByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"]) // Convert ID to integer
@@ -49,7 +46,7 @@ func getTaskByID(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Task not found", http.StatusNotFound)
 }
 
-// Update an existing task (PUT /tasks/{id})
+
 func updateTask(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -66,7 +63,6 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Task not found", http.StatusNotFound)
 }
 
-// Delete a task by ID (DELETE /tasks/{id})
 func deleteTask(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -80,7 +76,6 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Task not found", http.StatusNotFound)
 }
 
-// Main function to set up the routes and start the server
 func main() {
 	// Initialize the list with one predefined task "Buy groceries"
 	tasks = append(tasks, Task{
